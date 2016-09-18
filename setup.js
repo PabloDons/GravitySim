@@ -53,12 +53,13 @@ function draw() {
 
 
     for (var i=0; i<planets.length; i++) {
-        var planeti = new Planet(planets[i].loc.x,planets[i].loc.y,planets[i].mass/5515.3,planets[i].vel);
+        var planeti = new Planet(planets[i].loc.x,planets[i].loc.y,planets[i].mass/planets[i].density,planets[i].vel);
         for (var j=i+1; j<planets.length; j++) {
-            var planetj = new Planet(planets[j].loc.x,planets[j].loc.y,planets[j].mass/5515.3,planets[j].vel);
+            var planetj = new Planet(planets[j].loc.x,planets[j].loc.y,planets[j].mass/planets[i].density,planets[j].vel);
             if (planetj.collide(planeti)) {
-                /*console.info("planet at ["+planeti.loc.x+", "+planeti.loc.y+"] collides with planet at ["+planetj.loc.x+", "+planetj.loc.y+"]");
-                planets.splice(j,1);
+                console.log(i,j);
+                console.info("planet at ["+planeti.loc.x+", "+planeti.loc.y+"] collides with planet at ["+planetj.loc.x+", "+planetj.loc.y+"]");
+                /*planets.splice(j,1);
                 planets[i] = new Planet(
                     (planeti.loc.x*planeti.mass + planetj.loc.x*planetj.mass)
                     /(planeti.mass + planetj.mass),
@@ -69,7 +70,7 @@ function draw() {
                     .add(planetj.vel.mult(planetj.mass))
                     .div(planeti.mass+planetj.mass)
                 );
-                planeti = new Planet(planets[i].loc.x,planets[i].loc.y,planets[i].mass/5515.3,planets[i].vel);
+                planeti = new Planet(planets[i].loc.x,planets[i].loc.y,planets[i].mass/planets[i].density,planets[i].vel);
                 j-=1;
                 continue;*/
             }
@@ -110,7 +111,7 @@ function setup() {
     c = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
 
-    frameRate = 30;
+    frameRate = 60;
     G = 6.674 * Math.pow(10, -7);
     pcreatelvl = 0;
     gridsize = 60;

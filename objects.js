@@ -1,6 +1,7 @@
 //// Objects ////
 function Planet(x,y,mass,vel){
-    this.mass = mass*5515.3;
+    this.density = 5515.3;
+    this.mass = mass*this.density;
     this.loc = new PVector(x,y);
     this.vel = vel;
 
@@ -9,8 +10,8 @@ function Planet(x,y,mass,vel){
         this.loc.add(this.vel);
         return this;
     };
-    this.collide = function (planet) {
-        return (this.loc.dist(planet.loc)<=planet.r+this.r);
+    this.collide = function (p) {
+        return (this.loc.dist(p.loc)<=p.r+this.r);
     };
     this.display = function() {
         ctx.beginPath();

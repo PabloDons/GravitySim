@@ -2,8 +2,8 @@ var planets;
 var G, newpr;
 var pcreatelvl, gridsize;
 var newcenter;
-var scaling = 1;
 
+var scaling = 1;
 var cStartX, cStartY;
 var dX = 0, dY = 0;
 var trackPlanet = null;
@@ -19,6 +19,27 @@ function cloneObject(obj) {
         if (obj.hasOwnProperty(attr)) {copy[attr] = obj[attr];}
     }
     return copy;
+}
+
+function drawDebug(lines) {
+    var tmp = "";
+    var keys = [];
+    for (l in lines) {
+        if (l.length>tmp.length) {
+            tmp = l;
+        }
+        if (lines.hasOwnProperty(l)) {
+            keys.push(l);
+        }
+    }
+    ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+    ctx.fillRect(8, 8, (lines[tmp].length+tmp.length)*8+32, keys.length*15+16);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font="12px Arial";
+
+    for (var i=0;i<keys.length;i++) {
+        ctx.fillText(keys[i].concat(": ").concat(lines[keys[i]]), 20,25+15*i);
+    }
 }
 
 function draw() {
@@ -92,17 +113,13 @@ function draw() {
 
     ctx.restore();
 
-    ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
-    ctx.fillRect(0, 0, 170, 120);
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font="12px Arial";
-
-    ctx.fillText("framerate: ".concat(Math.round(frameRate).toString()), 20, 20);
-    ctx.fillText("dX, dY: ".concat(Math.round(dX).toString())
-    .concat(", ").concat(Math.round(dY).toString()), 20, 20+15*1);
-    ctx.fillText("Scale: ".concat(scaling.toString()), 20, 20+15*2);
-    ctx.fillText("Planets: ".concat(planets.length.toString()),20,20+15*3);
-    ctx.fillText("Planet 0: ".concat(Math.round(planets[0].loc.x).toString()).concat(", ").concat(Math.round(planets[0].loc.y).toString()),20,20+15*4);
+    drawDebug({
+        "framerate": Math.round(frameRate).toString(),
+        "dX, dY": Math.round(dX).toString().concat(", ").concat(Math.round(dY).toString()),
+        "Scale": scaling.toString(),
+        "Planets": planets.length.toString(),
+        "Planet 0": Math.round(planets[0].loc.x).toString().concat(", ").concat(Math.round(planets[0].loc.y).toString()),
+    });
 
     console.info("__interationEnd__");
 }

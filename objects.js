@@ -19,7 +19,6 @@ function Planet(x,y,mass,vel){
         ctx.fill();
         return this;
     };
-    console.log(this);
 }
 
 function PVector(x,y){
@@ -61,7 +60,7 @@ function PVector(x,y){
         return this.mult(m/this.mag());
     };
     this.heading = function() {
-        return (-Math.atan2(-this.y,this.x));
+        return Math.atan2(this.y,this.x);
     };
     this.dist = function(v) {
         dx = this.x - v.x;

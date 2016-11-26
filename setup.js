@@ -15,7 +15,7 @@ var frameRate;
 
 //// static ////
 function cloneObject(obj) {
-    if (null == obj || "object" != typeof obj) {return obj;}
+    if (null === obj || "object" != typeof obj) {return obj;}
     var copy = obj.constructor();
     for (var attr in obj) {
         if (obj.hasOwnProperty(attr)) {copy[attr] = obj[attr];}
@@ -26,7 +26,7 @@ function cloneObject(obj) {
 function drawDebug(lines) {
     var tmp = "";
     var keys = [];
-    for (l in lines) {
+    for (var l in lines) {
         if (l.length>tmp.length) {
             tmp = l;
         }
@@ -49,7 +49,7 @@ function draw() {
     c.height = window.innerHeight;
     ctx = c.getContext("2d");
     ctx.save();
-    if (trackPlanet != null) {
+    if (trackPlanet !== null) {
         dX = window.innerWidth/2 - trackPlanet.loc.x;
         dY = window.innerHeight/2 - trackPlanet.loc.y;
     } else {
@@ -58,8 +58,8 @@ function draw() {
     }
 
     ctx.strokeStyle = "rgb(235,235,235)";
-    for (i=dX-Math.floor(dX/gridsize+1)*gridsize; i<window.innerWidth; i+=gridsize) {
-        for (j=dY-Math.floor(dY/gridsize+1)*gridsize; j<window.innerHeight; j+=gridsize) {
+    for (var i=dX-Math.floor(dX/gridsize+1)*gridsize; i<window.innerWidth; i+=gridsize) {
+        for (var j=dY-Math.floor(dY/gridsize+1)*gridsize; j<window.innerHeight; j+=gridsize) {
             ctx.strokeRect(i, j, gridsize, gridsize);
         }
     }
@@ -72,7 +72,7 @@ function draw() {
     ctx.fillStyle = "rgb(170,170,170)";
 
 
-    for (var i=0; i<planets.length; i++) {
+    for (i=0; i<planets.length; i++) {
         var planeti = new Planet(planets[i].loc.x,planets[i].loc.y,planets[i].mass/planets[i].density,planets[i].vel);
         for (var j=i+1; j<planets.length; j++) {
             var planetj = new Planet(planets[j].loc.x,planets[j].loc.y,planets[j].mass/planets[i].density,planets[j].vel);
@@ -110,25 +110,24 @@ function draw() {
         planets[i].move().display();
     }
 
-    switch (pcreatelvl) {
-        case 1:
-            ctx.beginPath();
-            ctx.arc(newcenter[0],newcenter[1],newpr,0,2*Math.PI,false);
-            ctx.fill();
-            break;
-        case 2:
-            ctx.beginPath();
-            console.log(newcenter, mousepos,newpr);
-            ctx.arc(newcenter[0],newcenter[1],newpr,0,2*Math.PI,false);
-            ctx.fill();
-            ctx.strokeStyle = "#FF0000";
-            ctx.lineWidth=2;
-            ctx.beginPath();
-            ctx.moveTo(newcenter[0],newcenter[1]);
-            ctx.lineTo(mousepos[0],mousepos[1]);
-            ctx.stroke();
-            break;
-    }
+    // switch (pcreatelvl) {
+    //     case 1:
+    //         ctx.beginPath();
+    //         ctx.arc(newcenter[0],newcenter[1],newpr,0,2*Math.PI,false);
+    //         ctx.fill();
+    //         break;
+    //     case 2:
+    //         ctx.beginPath();
+    //         ctx.arc(newcenter[0],newcenter[1],newpr,0,2*Math.PI,false);
+    //         ctx.fill();
+    //         ctx.strokeStyle = "#FF0000";
+    //         ctx.lineWidth=2;
+    //         ctx.beginPath();
+    //         ctx.moveTo(newcenter[0],newcenter[1]);
+    //         ctx.lineTo(mousepos[0],mousepos[1]);
+    //         ctx.stroke();
+    //         break;
+    // }
 
     ctx.restore();
 
@@ -140,7 +139,7 @@ function draw() {
         "Planet 0": Math.round(planets[0].loc.x).toString().concat(", ").concat(Math.round(planets[0].loc.y).toString()),
     });
 
-    console.info("__interationEnd__");
+    // console.info("__interationEnd__");
 }
 
 function setup() {
@@ -148,23 +147,25 @@ function setup() {
 
     pcreatelvl = 0;
     c.addEventListener('click',function(event) {
-        if (pcreatelvl === 0) {
-            newcenter = mousepos;
-            newpr = 0;
-        } else if (pcreatelvl === 2) {
-            planets.push(new Planet(newcenter[0]-dX, newcenter[1]-dX, (4.0/3.0)*Math.PI*Math.pow(newpr,3.0), new PVector(mousepos[0]-newcenter[0], mousepos[1]-newcenter[1])));
-            // ^ why u not work
-        }
-        pcreatelvl++;
-        if (pcreatelvl > 2) {
-            pcreatelvl = 0;
-        }
+        // if (pcreatelvl === 0) {
+        //     newcenter = mousepos;
+        //     newpr = 0;
+        // } else if (pcreatelvl == 2) {
+        //     planets.push(new Planet(newcenter[0], newcenter[1], (4.0/3.0)*Math.PI*Math.pow(newpr,3.0), new PVector(Math.atan2(newcenter[1]-mousepos[1], newcenter[0]-mousepos[0])).mult(Math.sqrt(Math.pow(newcenter[0]-mousepos[0],2)+Math.pow(newcenter[1]-mousepos[1],2))).div(-10)));
+        //     console.log(planets.slice(-1)[0].loc);
+        //     console.log(newcenter, mousepos);
+        //     // ^ why u not work
+        // }
+        // pcreatelvl++;
+        // if (pcreatelvl > 2) {
+        //     pcreatelvl = 0;
+        // }
     });
     c.addEventListener('mousemove',function(event){
         mousepos = [event.pageX-dX,event.pageY-dY];
-        if (pcreatelvl === 1) {
-            newpr = Math.sqrt(Math.pow(newcenter[0]-mousepos[0],2)+Math.pow(newcenter[1]-mousepos[1],2));
-        }
+        // if (pcreatelvl == 1) {
+        //     newpr = Math.sqrt(Math.pow(newcenter[0]-mousepos[0],2)+Math.pow(newcenter[1]-mousepos[1],2));
+        // }
     });
 
     ctx = canvas.getContext("2d");
